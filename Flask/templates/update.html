@@ -12,22 +12,13 @@
 
     {% endfor %}
 
-    {% if name %}
-        <h1>Helllo {{ name}}</h1>
-        <br>
-        <table class="table table-hover table-bordered table-striped">
-            {% for our_user in our_users %}
-                <tr>
-                    <td>  {{ our_user.id }}. <a href="{{ url_for('update', id=our_user.id) }}">
-                        {{ our_user.name }} </a> -
-                        {{ our_user.email }} - {{ our_user.favori_color }}</td>
-                </tr>
-                <br>
+    {% if id == current_user.id %}
 
-            {% endfor %}
-        </table>
-    {% else %}
-        <h1>update user... </h1>
+        <h1>Update user... </h1>
+        <br><br>
+         ID to Update: {{ id }}<br>
+          Current Id: {{ current_user.id }}
+        <br>
         <br>
         <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
             <form action="/update/{{ name_to_update.id }}" method="POST">
@@ -35,6 +26,10 @@
                 {{ form.name.label(class="form-label")}}
                 {{ form.name(class="form-control", value=name_to_update.name) }}
                 <br>
+                {{ form.username.label(class="form-label")}}
+                {{ form.username(class="form-control", value=name_to_update.username) }}
+                <br>
+
                 {{ form.email.label(class="form-label") }}
                 {{ form.email(class="form-control", value=name_to_update.email) }}
 
@@ -43,11 +38,16 @@
                 {{ form.favori_color(class="form-control", value=name_to_update.favori_color) }}
                 <br>
                 {{ form.submit(class="btn btn-secondary") }}
-                <a href="{{ url_for('delete', id=id) }}">Delete </a>
+                <a href="{{ url_for('delete', id=id) }}" class="btn btn-danger">Delete </a>
             </form>
         </div>
         <br>
         <br>
+{% else %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            You can not update this ID user!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
 
     {% endif %}
 {% endblock %}

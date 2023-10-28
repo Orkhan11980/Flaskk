@@ -11,7 +11,7 @@
 
     {% endfor %}
 
-
+{% if current_user.is_authenticated %}
         <h1>add blog post: </h1>
         <br>
         <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
@@ -19,9 +19,6 @@
                 {{ form.hidden_tag() }}
                 {{ form.title.label(class="form-label") }}
                 {{ form.title(class="form-control") }}
-                <br>
-                {{ form.author.label(class="form-label") }}
-                {{ form.author(class="form-control") }}
 
                 <br>
                 {{ form.slug.label(class="form-label")}}
@@ -37,7 +34,9 @@
 
             </form>
         </div>
-        <br>
+    {% else %}
+    <h2>You must be logged innn..</h2>
+    <a href="{{ url_for('login') }}" class="btn btn-secondary">Login</a>
 
-
+    {% endif %}
 {% endblock %}
