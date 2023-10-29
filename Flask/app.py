@@ -2,6 +2,7 @@ from datetime import datetime
 from flask import Flask, render_template, flash, jsonify
 from flask import request, redirect, url_for
 from flask_migrate import Migrate
+import os
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from werkzeug.urls import url_decode
@@ -18,7 +19,8 @@ app = Flask(__name__)
 ckeditor = CKEditor(app)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://gpqamgqhaoppol:62d140be0fbdb06503ffab1593c0312e8a1f8c6ee56801f765084d8ac35998e7@ec2-44-215-1-253.compute-1.amazonaws.com:5432/d844p5klh4cnik'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/users'
 app.config['SECRET_KEY'] = "my super secret"
 db.init_app(app)
 migrate = Migrate(app, db)
