@@ -12,8 +12,10 @@ from wtforms.widgets import TextArea
 from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from webforms import LoginForm, SearchForm, UserForm, PostForm, PasswordForm, NameForm
 from database import Users, Posts, db
+from flask_ckeditor import CKEditor
 
 app = Flask(__name__)
+ckeditor = CKEditor(app)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/users'
@@ -62,11 +64,14 @@ def dashboard():
     form = UserForm()
     id = current_user.id
     name_to_update = Users.query.get_or_404(id)
+
     if request.method == "POST":
         name_to_update.name = request.form['name']
         name_to_update.email = request.form['email']
         name_to_update.favori_color = request.form['favori_color']
         name_to_update.username = request.form['username']
+        name_to_update.about_author = request.form['about_author']
+
         try:
             db.session.commit()
             flash("user updated")
@@ -79,6 +84,12 @@ def dashboard():
                                    form=form,
                                    name_to_update=name_to_update, id=id)
     else:
+        form.name.data = name_to_update.name
+        form.email.data = name_to_update.email
+        form.favori_color.data = name_to_update.favori_color
+        form.username.data = name_to_update.username
+        form.about_author.data = name_to_update.about_author
+
         return render_template("dashboard.html",
                                form=form,
                                name_to_update=name_to_update,
@@ -124,17 +135,18 @@ def edit_post(id):
         posts = Posts.query.order_by(Posts.date_posted)
         return render_template("posts.html", posts=posts)
 
+
 @app.context_processor
 def base():
     form = SearchForm()
     return dict(form=form)
+
 
 @app.route('/search', methods=["POST"])
 def search():
     form = SearchForm()
     posts = Posts.query
     if form.validate_on_submit():
-
         post.searched = form.searched.data
         posts = posts.filter(Posts.content.like('%' + post.searched + '%'))
         posts = posts.order_by(Posts.title).all()
@@ -249,6 +261,7 @@ def update(id):
         name_to_update.email = request.form['email']
         name_to_update.favori_color = request.form['favori_color']
         name_to_update.username = request.form['username']
+        name_to_update.about_author = request.form['about_author']
         try:
             db.session.commit()
             flash("user updated")
@@ -265,6 +278,12 @@ def update(id):
 
                                    )
     else:
+        form.name.data = name_to_update.name
+        form.email.data = name_to_update.email
+        form.favori_color.data = name_to_update.favori_color
+        form.username.data = name_to_update.username
+        form.about_author.data = name_to_update.about_author
+
         return render_template("update.html",
                                form=form,
                                name_to_update=name_to_update,
@@ -299,6 +318,17 @@ def add_user():
                            name=name,
                            our_users=our_users,
                            name_to_update=name_to_update)
+
+
+@app.route('/admin')
+@login_required
+def admin():
+    id = current_user.id
+    if id == 20:
+        return render_template("admin.html")
+    else:
+        flash("You must be admin")
+        return redirect(url_for('dashboard'))
 
 
 @app.route('/')

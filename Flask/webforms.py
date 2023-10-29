@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField
+from wtforms import StringField, SubmitField, PasswordField,BooleanField,ValidationError,TextAreaField
 from flask_wtf import FlaskForm
 from wtforms.validators import DataRequired, EqualTo
 from wtforms.widgets import TextArea
+from flask_ckeditor import CKEditorField
 
 
 class SearchForm(FlaskForm):
@@ -18,7 +19,7 @@ class LoginForm(FlaskForm):
 
 class PostForm(FlaskForm):
     title = StringField("Title", validators=[DataRequired()])
-    content = StringField("Content", validators=[DataRequired()], widget=TextArea())
+    content = CKEditorField("Content", validators=[DataRequired()])
     author = StringField("Author")
     slug = StringField("Slug", validators=[DataRequired()])
     submit = SubmitField("Submit", validators=[DataRequired()])
@@ -34,6 +35,7 @@ class UserForm(FlaskForm):
     username = StringField("UserNAME", validators=[DataRequired()])
     email = StringField("Email", validators=[DataRequired()])
     favori_color = StringField("favori color")
+    about_author = TextAreaField("About Author")
     password_hash = PasswordField('Password',
                                   validators=[DataRequired(), EqualTo('password_hash2', message='password must match')])
     password_hash2 = PasswordField('Confirm Password', validators=[DataRequired()])

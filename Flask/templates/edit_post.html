@@ -11,7 +11,7 @@
 
     {% endfor %}
 
-    <h1>Blog Posts..</h1>
+    <h1>Editing Post..</h1>
     <br>
     {% if current_user.is_authenticated %}
     <div class="shadow p-3 mb-5 bg-body-tertiary rounded">
@@ -34,6 +34,10 @@
             {{ form.submit(class="btn btn-secondary") }}
 
         </form>
+
+        {{ ckeditor.load() }}
+        {{ ckeditor.config(name='content', height=200) }}
+
 
     </div>
     {% else %}

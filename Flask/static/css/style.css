@@ -9,3 +9,17 @@ body{
     font-size: 16px;
     color: #3A7734 ;
 }
+.card-body {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.content_dash {
+    flex: 1;
+}
+
+.image-container {
+    margin-top: 10px;
+    margin-left: auto;
+}
+
