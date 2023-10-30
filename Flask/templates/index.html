@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+
+
+<h1>Here is Home Page </h1>
+<p>My Name is {{ firstname|capitalize|safe }}</p>
+
+<p>
+    this is {{ stuff|safe|capitalize|upper}}
+</p>
+
+<h3>
+    fav pizzas
+</h3>
+{% for toppng in fav_pizza %}
+
+    {{ toppng }} <br>
+
+{% endfor %}
+
+{% endblock %}
