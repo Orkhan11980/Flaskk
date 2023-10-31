@@ -10,6 +10,11 @@
     </div>
 
 {% endfor %}
+    <form method="POST" action="{{ url_for('search')}}" class="d-flex" role="search">
+        {{ form.hidden_tag() }}
+        <input class="form-control me-2" type="search" placeholder="Search for posts" aria-label="Search", name="searched">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
 
     <h1>Blog Posts..</h1>
     <br>

@@ -5,7 +5,7 @@
 
     <br>
 
-        <h3>You Searched For : <strong>{{ searched }}</strong> </h3>
+        <h3>You searched for Posts that contain : <strong>{{ searched }}</strong> </h3>
     <br>
     <br>
 
@@ -16,11 +16,11 @@
     <h2> {{ post.title }}</h2>
     <small> BY: {{ post.poster.username }}<br>
         {{ post.date_posted }}</small><br><br>
-    {{ post.content }}<br><br>
+    {{ post.content |safe }}<br><br>
     </div>
     {% endfor %}
 {% else  %}
- <p>You searched for <strong>{{ searched }}</strong> that is not found</p>
+ <p>You searched for Posts that contain <strong>{{ searched|safe }}</strong> that is not found</p>
 
     {% endif %}
 {% endblock %}

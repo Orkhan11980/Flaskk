@@ -13,10 +13,10 @@ app = Flask(__name__)
 ckeditor = CKEditor(app)
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://mwanyoxchzymaf' \
-                                        ':8cce79d331847ad4448abcaf6db3905ba1b53bb7523fbb3c53eddfb3adc18ac5@ec2-44-208' \
-                                        '-206-97.compute-1.amazonaws.com:5432/dc2baocov9fcj0'
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/users'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://mwanyoxchzymaf' \
+#                                         ':8cce79d331847ad4448abcaf6db3905ba1b53bb7523fbb3c53eddfb3adc18ac5@ec2-44-208' \
+#                                         '-206-97.compute-1.amazonaws.com:5432/dc2baocov9fcj0'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:1234@localhost/users'
 app.config['SECRET_KEY'] = "my super secret"
 db.init_app(app)
 migrate = Migrate(app, db)
@@ -72,7 +72,7 @@ def dashboard():
 
         try:
             db.session.commit()
-            flash("user updated")
+            flash("User updated")
             return render_template("dashboard.html",
                                    form=form,
                                    name_to_update=name_to_update, id=id)
@@ -119,7 +119,7 @@ def edit_post(id):
 
         db.session.add(post)
         db.session.commit()
-        flash("post has been updated")
+        flash("Post has been updated")
         return redirect(url_for('post', id=post.id))
 
     if current_user.id == post.poster_id:
@@ -172,7 +172,7 @@ def delete_post(id):
             posts = Posts.query.order_by(Posts.date_posted)
             return render_template('posts.html', posts=posts)
     else:
-        flash("you can not delete this post")
+        flash("You can not delete this post")
 
         posts = Posts.query.order_by(Posts.date_posted)
         return render_template('posts.html', posts=posts)
@@ -194,7 +194,7 @@ def add_post():
         db.session.add(post)
         db.session.commit()
 
-        flash("blog submitted")
+        flash("Blog submitted")
 
     return render_template("add_post.html", form=form)
 
@@ -233,7 +233,7 @@ def delete(id, ):
     try:
         db.session.delete(user_to_delete)
         db.session.commit()
-        flash("deleted succesfully")
+        flash("Deleted succesfully")
         our_users = Users.query.order_by(Users.date_added)
         return render_template("add_user.html",
                                form=form,
@@ -262,7 +262,7 @@ def update(id):
         name_to_update.about_author = request.form['about_author']
         try:
             db.session.commit()
-            flash("user updated")
+            flash("User updated")
             return render_template("update.html",
                                    form=form,
                                    name_to_update=name_to_update,
@@ -329,21 +329,12 @@ def admin():
         return redirect(url_for('dashboard'))
 
 
-@app.route('/')
-def index():
-    firstname = "Orki"
-    fav_pizza = ["che", 41, "pepo"]
-    stuff = "this <strong>bold</strong> is bold"
-    return render_template("index.html",
-                           firstname=firstname,
-                           stuff=stuff,
-                           fav_pizza=fav_pizza)
 
 
-@app.route('/user/<name>')
-def user(name):
-    return render_template("user.html", name=name)
-
+# @app.route('/user/<name>')
+# def user(name):
+#     return render_template("user.html", name=name)
+#
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -354,42 +345,53 @@ def page_not_found(e):
 def page_not_found(e):
     return render_template("500.html"), 500
 
+#
+# @app.route('/test_pw', methods=['GET', 'POST'])
+# def test_pw():
+#     email = None
+#     password = None
+#     pw_to_check = None
+#     passed = None
+#     form = PasswordForm()
+#     if form.validate_on_submit():
+#         email = form.email.data
+#         password = form.password_hash.data
+#         form.email.data = ''
+#         form.password_hash.data = ''
+#         pw_to_check = Users.query.filter_by(email=email).first()
+#
+#         passed = check_password_hash(pw_to_check.password_hash, password)
+#     return render_template("test_pw.html",
+#                            email=email,
+#                            password=password,
+#                            pw_to_check=pw_to_check,
+#                            passed=passed,
+#                            form=form)
 
-@app.route('/test_pw', methods=['GET', 'POST'])
-def test_pw():
-    email = None
-    password = None
-    pw_to_check = None
-    passed = None
-    form = PasswordForm()
-    if form.validate_on_submit():
-        email = form.email.data
-        password = form.password_hash.data
-        form.email.data = ''
-        form.password_hash.data = ''
-        pw_to_check = Users.query.filter_by(email=email).first()
 
-        passed = check_password_hash(pw_to_check.password_hash, password)
-    return render_template("test_pw.html",
-                           email=email,
-                           password=password,
-                           pw_to_check=pw_to_check,
-                           passed=passed,
-                           form=form)
-
-
-@app.route('/name', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 def name():
     name = None
     form = NameForm()
     if form.validate_on_submit():
         name = form.name.data
         form.name.data = ''
-        flash("succesfuly submit")
+        flash("Welcome")
 
     return render_template("name.html",
                            name=name,
                            form=form)
+
+# @app.route('/')
+# def index():
+#     firstname = "Orki"
+#     fav_pizza = ["che", 41, "pepo"]
+#     stuff = "this <strong>bold</strong> is bold"
+#     return render_template("index.html",
+#                            firstname=firstname,
+#                            stuff=stuff,
+#                            fav_pizza=fav_pizza)
+
 
 if __name__ == "__main__":
     with app.app_context():
